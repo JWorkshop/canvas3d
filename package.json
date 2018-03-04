@@ -1,0 +1,58 @@
+{
+  "name": "@jworkshop/canvas3d",
+  "version": "0.0.1",
+  "description":
+    "A canvas react UI component integrated with 3d rendering features.",
+  "author": "jworkshop <john.joydesign@gmail.com>",
+  "keywords": ["canvas", "three", "3d"],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/JWorkshop/canvas3d.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@jworkshop/animator": "0.0.5",
+    "@jworkshop/canvas": "0.0.5",
+    "classnames": "^2.2.5",
+    "prop-types": "^15.6.1",
+    "three": "^0.90.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "eslint": "^4.7.2",
+    "eslint-plugin-react": "^7.7.0",
+    "install": "^0.10.4",
+    "node-sass": "^4.5.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  },
+  "main": "./lib/index.js",
+  "scripts": {
+    "build": "babel src -d lib --copy-files"
+  },
+  "babel": {
+    "presets": ["env", "react"]
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 8,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "env": {
+      "browser": true,
+      "node": true,
+      "es6": true
+    },
+    "plugins": ["react"],
+    "extends": ["eslint:recommended", "plugin:react/recommended"],
+    "rules": {
+      "semi": 2,
+      "no-empty": 0
+    }
+  }
+}
