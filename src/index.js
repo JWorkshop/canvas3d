@@ -136,14 +136,14 @@ class Canvas3D extends Canvas {
   }
 
   render() {
-    const { className, style, canvasClassName, canvasStyle } = this.props;
+    const { className, canvasClassName, canvasStyle, ...rest } = this.props;
     const { width, height } = this.state;
 
     return (
       <div
         ref={wrapper => (this.wrapper = wrapper)}
         className={ClassNames("canvas-container", className)}
-        style={style}
+        {...rest}
       >
         <canvas
           ref={canvas => (this.canvas = canvas)}
