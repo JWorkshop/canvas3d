@@ -8,6 +8,7 @@ import {
   WebGLRenderer,
   CanvasRenderer
 } from "three";
+import webGLEnabled from "webgl-enabled";
 
 import Canvas from "@jworkshop/canvas";
 import Animator from "@jworkshop/animator";
@@ -17,19 +18,7 @@ const ASPECT = 1;
 const NEAR = 0.1;
 const FAR = 10000;
 
-const checkWebGLAvailable = () => {
-  try {
-    var canvas = document.createElement("canvas");
-    return !!(
-      window.WebGLRenderingContext &&
-      (canvas.getContext("webgl") || canvas.getContext("experimental-webgl"))
-    );
-  } catch (error) {
-    return false;
-  }
-};
-
-const isWebGLAvailable = checkWebGLAvailable();
+const isWebGLAvailable = webGLEnabled();
 
 class Canvas3D extends Canvas {
   constructor(props) {
@@ -87,8 +76,9 @@ class Canvas3D extends Canvas {
   componentDidMount() {
     this._mount();
 
-    const { animator, camera, onPause, onResume } = this.props;
-    const { offsetWidth: width, offsetHeight: height } = this.wrapper;
+    const { props, wrapper } = this;
+    const { animator, camera } = props;
+    const { offsetWidth: width, offsetHeight: height } = wrapper;
 
     if (isWebGLAvailable) {
       this.renderer = new WebGLRenderer({
@@ -112,41 +102,31 @@ class Canvas3D extends Canvas {
 
       renderer.render(scene, camera);
     });
-
-    this.removePause = animator.onPause(onPause);
-    this.removeResume = animator.onResume(onResume);
+    this.removePause = animator.onPause(props.onPause);
+    this.removeResume = animator.onResume(props.onResume);
   }
 
   componentWillUnmount() {
     this._unmount();
 
-    const { removeAnimation, removePause, removeResume } = this;
-
-    if (removeAnimation) {
-      removeAnimation();
-    }
-
-    if (removePause) {
-      removePause();
-    }
-
-    if (removeResume) {
-      removeResume();
-    }
+    this.removeAnimation();
+    this.removePause();
+    this.removeResume();
   }
 
   render() {
-    const { className, canvasClassName, canvasStyle, ...rest } = this.props;
+    const { id, className, style, canvasClassName, canvasStyle } = this.props;
     const { width, height } = this.state;
 
     return (
       <div
-        ref={wrapper => (this.wrapper = wrapper)}
+        ref={w => (this.wrapper = w)}
+        id={id}
         className={ClassNames("canvas-container", className)}
-        {...rest}
+        style={style}
       >
         <canvas
-          ref={canvas => (this.canvas = canvas)}
+          ref={c => (this.canvas = c)}
           className={canvasClassName}
           style={canvasStyle}
           width={width}
